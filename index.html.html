@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Family Points System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+    .card {
+      max-width: 400px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; }
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    .points {
+      font-size: 24px;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="card" id="loginCard">
+  <h2>Family Login</h2>
+  <input type="password" id="password" placeholder="Enter password" />
+  <button onclick="login()">Login</button>
+  <p id="error" style="color:red; text-align:center;"></p>
+</div>
+
+<div class="card hidden" id="adminCard">
+  <h2>Points Control</h2>
+  <div class="points">Total Points: <span id="points">0</span></div>
+
+  <div style="text-align:center;">
+    <button onclick="addPoints(10)">+10</button>
+    <button onclick="addPoints(20)">+20</button>
+    <button onclick="addPoints(50)">+50</button>
+    <button onclick="addPoints(100)">+100</button>
+    <button onclick="addPoints(200)">+200</button>
+    <button onclick="addPoints(500)">+500</button>
+    <button onclick="addPoints(1000)">+1000</button>
+  </div>
+
+  <button onclick="logout()" style="width:100%; margin-top:15px;">Logout</button>
+</div>
+
+<script>
+  // Change these passwords (give ONLY to parents & brother)
+  const allowedPasswords = [
+    "father123",
+    "mother123",
+    "brother123"
+  ];
+
+  let totalPoints = localStorage.getItem("points")
+    ? parseInt(localStorage.getItem("points"))
+    : 0;
+
+  document.getElementById("points").innerText = totalPoints;
+
+  function login() {
+    const pw = document.getElementById("password").value;
+    if (allowedPasswords.includes(pw)) {
+      document.getElementById("loginCard").classList.add("hidden");
+      document.getElementById("adminCard").classList.remove("hidden");
+    } else {
+      document.getElementById("error").innerText = "Wrong password";
+    }
+  }
+
+  function addPoints(amount) {
+    totalPoints += amount;
+    localStorage.setItem("points", totalPoints);
+    document.getElementById("points").innerText = totalPoints;
+  }
+
+  function logout() {
+    document.getElementById("adminCard").classList.add("hidden");
+    document.getElementById("loginCard").classList.remove("hidden");
+    document.getElementById("password").value = "";
+  }
+</script>
+
+</body>
+</html>
